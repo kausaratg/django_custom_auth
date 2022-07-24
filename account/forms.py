@@ -10,7 +10,6 @@ class UserRegistration(UserCreationForm):
 
 
 
-
 class UserLogin(forms.ModelForm):
     password = forms.CharField(label='password', widget=forms.PasswordInput)
     class Meta:
