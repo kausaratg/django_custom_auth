@@ -3,6 +3,8 @@ from .forms import UserRegistration, UserLogin
 from .models import MyUser
 from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import send_mail, EmailMessage
+from django.conf import settings
 # Create your views here.
 
 def register(request):
@@ -11,6 +13,14 @@ def register(request):
         form_get = UserRegistration(request.POST)
         if form_get.is_valid():
             form_get.save()
+            email = EmailMessage(
+                'Login Successfull',
+                'Thanks for registering on auth wiki. you username and password has been saved successfully',
+                settings.EMAIL_HOST_USER,
+                [MyUser.email],
+            )
+            email.fail_silently = False
+            email.send()
             return redirect('my_login')
     context = {'user_form':user_form}
     return render(request, 'accounts/index.html', context)
